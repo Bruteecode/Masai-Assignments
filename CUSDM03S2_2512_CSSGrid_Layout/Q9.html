@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>4x2 Grid Layout</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            padding: 20px;
+            font-family: Arial, sans-serif;
+        }
+
+        .grid-container {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            grid-template-rows: repeat(2, 150px);
+            gap: 10px; 
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .grid-item {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            font-size: 1.2rem;
+            border-radius: 5px;
+        }
+
+         .grid-item:nth-child(1) {
+            background-color: #ff6b6b; /* Red */
+        }
+        .grid-item:nth-child(2) {
+            background-color: #4ecdc4; /* Teal */
+        }
+        .grid-item:nth-child(3) {
+            background-color: #45b7d1; /* Blue */
+        }
+        .grid-item:nth-child(4) {
+            background-color: #96c93d; /* Green */
+        }
+        .grid-item:nth-child(5) {
+            background-color: #f7b731; /* Yellow */
+        }
+        .grid-item:nth-child(6) {
+            background-color: #d64161; /* Pink */
+        }
+        .grid-item:nth-child(7) {
+            background-color: #5d5d5d; /* Gray */
+        }
+        .grid-item:nth-child(8) {
+            background-color: #ff9f43; /* Orange */
+        }
+    </style>
+</head>
+<body>
+    <div class="grid-container">
+        <div class="grid-item">Item 1</div>
+        <div class="grid-item">Item 2</div>
+        <div class="grid-item">Item 3</div>
+        <div class="grid-item">Item 4</div>
+        <div class="grid-item">Item 5</div>
+        <div class="grid-item">Item 6</div>
+        <div class="grid-item">Item 7</div>
+        <div class="grid-item">Item 8</div>
+    </div>
+</body>
+</html>
