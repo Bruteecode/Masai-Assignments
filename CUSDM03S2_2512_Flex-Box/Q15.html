@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Responsive Image Gallery</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #111;
+      color: #fff;
+    }
+
+    .container {
+      display: grid;
+      grid-template-columns: 3fr 1fr; /* Left section takes more space */
+      gap: 10px;
+      padding: 20px;
+    }
+
+    .left-section {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr); /* Four columns */
+      gap: 10px;
+    }
+
+    .left-section img {
+      width: 100%;
+      aspect-ratio: 1 / 1; /* Ensures images are square */
+      object-fit: cover;
+      border-radius: 50%; /* Makes images circular */
+    }
+
+    .right-section {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .right-section img {
+      width: 100%;
+      height: auto;
+      aspect-ratio: 4 / 3; /* Rectangular aspect ratio */
+      object-fit: cover;
+      border-radius: 10px; /* Slight rounding for rectangles */
+    }
+
+    /* Responsive for tablets */
+    @media screen and (max-width: 768px) {
+      .container {
+        grid-template-columns: 1fr; /* Stack sections vertically */
+      }
+
+      .left-section {
+        grid-template-columns: repeat(3, 1fr); /* Three columns for smaller screens */
+      }
+    }
+
+    /* Responsive for mobile devices */
+    @media screen and (max-width: 480px) {
+      .left-section {
+        grid-template-columns: repeat(2, 1fr); /* Two columns for mobile screens */
+        gap: 5px;
+      }
+
+      .right-section img {
+        aspect-ratio: 16 / 9; /* Wider rectangles for smaller screens */
+        border-radius: 5px; /* Reduce rounding on smaller screens */
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <!-- Left Section -->
+    <div class="left-section">
+      <img src="https://picsum.photos/200?random=1" alt="Circular Image">
+      <img src="https://picsum.photos/200?random=2" alt="Circular Image">
+      <img src="https://picsum.photos/200?random=3" alt="Circular Image">
+      <img src="https://picsum.photos/200?random=4" alt="Circular Image">
+      <img src="https://picsum.photos/200?random=5" alt="Circular Image">
+      <img src="https://picsum.photos/200?random=6" alt="Circular Image">
+      <img src="https://picsum.photos/200?random=7" alt="Circular Image">
+      <img src="https://picsum.photos/200?random=8" alt="Circular Image">
+      <img src="https://picsum.photos/200?random=9" alt="Circular Image">
+      <img src="https://picsum.photos/200?random=10" alt="Circular Image">
+      <img src="https://picsum.photos/200?random=11" alt="Circular Image">
+      <img src="https://picsum.photos/200?random=12" alt="Circular Image">
+    </div>
+
+    <!-- Right Section -->
+    <div class="right-section">
+      <img src="https://picsum.photos/300/150?random=13" alt="Rectangular Image">
+      <img src="https://picsum.photos/300/150?random=14" alt="Rectangular Image">
+      <img src="https://picsum.photos/300/150?random=15" alt="Rectangular Image">
+      <img src="https://picsum.photos/300/150?random=16" alt="Rectangular Image">
+    </div>
+  </div>
+</body>
+</html>

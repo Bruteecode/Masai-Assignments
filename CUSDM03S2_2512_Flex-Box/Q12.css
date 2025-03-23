@@ -5,22 +5,31 @@
 }
 
 body {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
+    font-family: Arial, sans-serif;
+    text-align: center;
     background-color: #f4f4f4;
+    padding: 20px;
 }
 
 .container {
     display: flex;
     justify-content: center;
     align-items: center;
-    gap: 20px;
+    gap: 10px;
     background-color: white;
     padding: 20px;
     border-radius: 10px;
     box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
+    margin: 20px auto;
+    width: 80%;
+}
+
+.row-layout {
+    flex-direction: row;
+}
+
+.column-layout {
+    flex-direction: column;
 }
 
 .box {
