@@ -1,1 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
 
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Debounced Movie Search</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 20px;
+    }
+
+    input {
+      width: 100%;
+      padding: 10px;
+      font-size: 16px;
+    }
+
+    #results {
+      margin-top: 20px;
+    }
+
+    .movie {
+      padding: 10px;
+      border-bottom: 1px solid #ccc;
+    }
+  </style>
+</head>
+
+<body>
+
+  <h2>Search Movies</h2>
+  <input type="text" id="searchInput" placeholder="Type a movie name...">
+  <div id="results"></div>
+
+  <script>
+    const input = document.getElementById("searchInput");
+    const resultsDiv = document.getElementById("results");
+    let debounceTimer;
+
+    input.addEventListener("input", () => {
+      clearTimeout(debounceTimer);
+
+      debounceTimer = setTimeout(() => {
+        const query = input.value.trim();
+
+        if (query) {
+          fetchMovies(query);
+        } else {
+          resultsDiv.innerHTML = "";
+        }
+      }, 500);
+    });
+
+    function fetchMovies(query) {
+      const apiKey = "6a53bc43";
+      const url = `https://www.omdbapi.com/?apikey=${apiKey}&s=${query}`;
+
+      fetch(url)
+        .then((res) => res.json())
+        .then((data) => {
+          if (data.Response === "True") {
+            displayMovies(data.Search);
+          } else {
+            resultsDiv.innerHTML = `<p>No movies found</p>`;
+          }
+        })
+        .catch((error) => {
+          console.error("Error fetching data:", error);
+          resultsDiv.innerHTML = `<p>Error fetching movies.</p>`;
+        });
+    }
+
+    function displayMovies(movies) {
+      resultsDiv.innerHTML = "";
+      movies.forEach((movie) => {
+        const div = document.createElement("div");
+        div.classList.add("movie");
+        div.textContent = movie.Title;
+        resultsDiv.appendChild(div);
+      });
+    }
+  </script>
+</body>
+
+</html>
