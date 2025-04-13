@@ -1,1 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Register</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      padding: 20px;
+    }
+    form {
+      max-width: 400px;
+      margin: auto;
+    }
+    input, select, button {
+      width: 100%;
+      padding: 10px;
+      margin: 10px 0;
+    }
+  </style>
+</head>
+<body>
 
+  <h2>Register</h2>
+  <form id="registerForm">
+    <input type="text" id="name" placeholder="Name" required />
+    <input type="email" id="email" placeholder="Email" required />
+    <input type="password" id="password" placeholder="Password" required />
+    <select id="role" required>
+      <option value="">Select Role</option>
+      <option value="user">User</option>
+      <option value="admin">Admin</option>
+    </select>
+    <button type="submit">Register</button>
+  </form>
+
+  <script type="module">
+    import { getAuth, createUserWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/11.6.0/firebase-auth.js";
+    import { getDatabase, ref, set } from "https://www.gstatic.com/firebasejs/11.6.0/firebase-database.js";
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.0/firebase-app.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyB57iX9Cc1hrvHKAjPe7Wp8wdlThFJhGoE",
+      authDomain: "e-commerce-9bef9.firebaseapp.com",
+      projectId: "e-commerce-9bef9",
+      storageBucket: "e-commerce-9bef9.appspot.com",
+      messagingSenderId: "142525809112",
+      appId: "1:142525809112:web:a0dc78b9f2011caa9f32ad",
+      measurementId: "G-25GMSLR38R"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+    const db = getDatabase(app);
+
+    document.getElementById("registerForm").addEventListener("submit", (event) => {
+      event.preventDefault();
+      const name = document.getElementById("name").value;
+      const email = document.getElementById("email").value;
+      const password = document.getElementById("password").value;
+      const role = document.getElementById("role").value;
+
+      createUserWithEmailAndPassword(auth, email, password)
+        .then((userCredential) => {
+          const user = userCredential.user;
+          const userId = user.uid;
+          set(ref(db, 'users/' + userId), {
+            name: name,
+            email: email,
+            role: role
+          });
+          alert("Registration Successful! Please log in.");
+          window.location.href = "login.html";
+        })
+        .catch((error) => {
+          alert(error.message);
+        });
+    });
+  </script>
+</body>
+</html>
