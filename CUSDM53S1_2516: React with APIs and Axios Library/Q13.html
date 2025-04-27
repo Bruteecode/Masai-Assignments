@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Dynamic Email Form</title>
+  <script src="https://unpkg.com/react@18/umd/react.development.js" crossorigin></script>
+  <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js" crossorigin></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+</head>
+<body>
+
+  <div id="root"></div>
+
+  <script type="text/babel">
+    function DynamicEmailForm() {
+      const [emails, setEmails] = React.useState([]);
+      const [error, setError] = React.useState("");
+
+      const handleAddEmail = () => {
+        setEmails([...emails, { value: "", valid: true }]);
+      };
+
+      const handleEmailChange = (index, value) => {
+        const updatedEmails = [...emails];
+        updatedEmails[index].value = value;
+        updatedEmails[index].valid = validateEmail(value);
+        setEmails(updatedEmails);
+      };
+
+      const handleSubmit = (e) => {
+        e.preventDefault();
+        const invalidEmail = emails.find((email) => !email.valid);
+        if (invalidEmail) {
+          setError("Please enter valid email addresses.");
+        } else {
+          setError("");
+          alert("Emails submitted: " + emails.map((email) => email.value).join(", "));
+        }
+      };
+
+      const validateEmail = (email) => {
+        const regex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/;
+        return regex.test(email);
+      };
+
+      return (
+        <div>
+          <h1>Dynamic Email Form</h1>
+          <form onSubmit={handleSubmit}>
+            {emails.map((email, index) => (
+              <div key={index}>
+                <input
+                  type="email"
+                  placeholder={`Email ${index + 1}`}
+                  value={email.value}
+                  onChange={(e) => handleEmailChange(index, e.target.value)}
+                />
+                {!email.valid && <p style={{ color: 'red' }}>Invalid email format</p>}
+              </div>
+            ))}
+            <button type="button" onClick={handleAddEmail}>Add Email</button>
+            <button type="submit">Submit</button>
+          </form>
+          {error && <p style={{ color: 'red' }}>{error}</p>}
+          <div>
+            <h3>Entered Emails:</h3>
+            <ul>
+              {emails.map((email, index) => (
+                <li key={index}>{email.value}</li>
+              ))}
+            </ul>
+          </div>
+        </div>
+      );
+    }
+
+    const root = ReactDOM.createRoot(document.getElementById('root'));
+    root.render(<DynamicEmailForm />);
+  </script>
+
+</body>
+</html>

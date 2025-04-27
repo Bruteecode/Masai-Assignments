@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>User Management</title>
+  
+  <script src="https://unpkg.com/react@18/umd/react.development.js" crossorigin></script>
+  <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js" crossorigin></script>
+  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+</head>
+<body>
+  <div id="root"></div>
+
+  <script type="text/babel">
+    const firebaseURL = "https://masai-87b5d-default-rtdb.asia-southeast1.firebasedatabase.app/users";
+
+    function App() {
+      const [users, setUsers] = React.useState([]);
+      const [formData, setFormData] = React.useState({ name: "", email: "" });
+      const [editId, setEditId] = React.useState(null);
+      const [error, setError] = React.useState("");
+
+      const fetchUsers = async () => {
+        try {
+          const response = await axios.get(`${firebaseURL}.json`);
+          const data = response.data;
+          if (data) {
+            const usersArray = Object.keys(data).map((key) => ({
+              id: key,
+              ...data[key],
+            }));
+            setUsers(usersArray);
+          } else {
+            setUsers([]);
+          }
+        } catch (error) {
+          setError("Failed to fetch users.");
+        }
+      };
+
+      React.useEffect(() => {
+        fetchUsers();
+      }, []);
+
+      const validateEmail = (email) => {
+        return /\S+@\S+\.\S+/.test(email);
+      };
+
+      const handleSubmit = async (e) => {
+        e.preventDefault();
+        const { name, email } = formData;
+
+        if (!name.trim() || !email.trim()) {
+          alert("Name and Email are required.");
+          return;
+        }
+        if (!validateEmail(email)) {
+          alert("Please enter a valid email.");
+          return;
+        }
+
+        try {
+          if (editId) {
+            await axios.patch(`${firebaseURL}/${editId}.json`, formData);
+            setEditId(null);
+          } else {
+            await axios.post(`${firebaseURL}.json`, formData);
+          }
+          setFormData({ name: "", email: "" });
+          fetchUsers();
+        } catch (error) {
+          setError("Failed to add/update user.");
+        }
+      };
+
+      const handleEdit = (user) => {
+        setFormData({ name: user.name, email: user.email });
+        setEditId(user.id);
+      };
+
+      const handleDelete = async (id) => {
+        try {
+          await axios.delete(`${firebaseURL}/${id}.json`);
+          fetchUsers();
+        } catch (error) {
+          setError("Failed to delete user.");
+        }
+      };
+
+      return (
+        <div style={{ padding: "20px" }}>
+          <h1>User Management</h1>
+
+          <form onSubmit={handleSubmit} style={{ marginBottom: "20px" }}>
+            <input
+              type="text"
+              placeholder="Name"
+              value={formData.name}
+              onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+            />
+            <input
+              type="text"
+              placeholder="Email"
+              value={formData.email}
+              onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+            />
+            <button type="submit">{editId ? "Update User" : "Add User"}</button>
+          </form>
+
+          {error && <p style={{ color: "red" }}>{error}</p>}
+
+          <ul>
+            {users.map((user) => (
+              <li key={user.id} style={{ marginBottom: "10px" }}>
+                {user.name} - {user.email}
+                <button onClick={() => handleEdit(user)} style={{ marginLeft: "10px" }}>
+                  Edit
+                </button>
+                <button onClick={() => handleDelete(user.id)} style={{ marginLeft: "5px" }}>
+                  Delete
+                </button>
+              </li>
+            ))}
+          </ul>
+        </div>
+      );
+    }
+
+    ReactDOM.createRoot(document.getElementById("root")).render(<App />);
+  </script>
+</body>
+</html>

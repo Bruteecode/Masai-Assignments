@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Controlled Form</title>
+  <title>Uncontrolled Form</title>
   <script src="https://unpkg.com/react@18/umd/react.development.js" crossorigin></script>
   <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js" crossorigin></script>
   <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
@@ -13,39 +13,32 @@
   <div id="root"></div>
 
   <script type="text/babel">
-    function ControlledForm() {
-      const [username, setUsername] = React.useState("");
-      const [error, setError] = React.useState("");
+    function UncontrolledForm() {
+      const inputRef = React.useRef();
 
       const handleSubmit = (e) => {
         e.preventDefault();
-        if (username.trim() === "") {
-          setError("Username cannot be empty");
-        } else {
-          setError("");
-          alert(`Username submitted: ${username}`);
-        }
+        alert(`Entered text: ${inputRef.current.value}`);
+        inputRef.current.value = "";
       };
 
       return (
         <div>
-          <h1>Controlled Form</h1>
+          <h1>Uncontrolled Form</h1>
           <form onSubmit={handleSubmit}>
             <input
               type="text"
-              placeholder="Enter username"
-              value={username}
-              onChange={(e) => setUsername(e.target.value)}
+              placeholder="Enter text"
+              ref={inputRef}
             />
             <button type="submit">Submit</button>
           </form>
-          {error && <p style={{ color: 'red' }}>{error}</p>}
         </div>
       );
     }
 
     const root = ReactDOM.createRoot(document.getElementById('root'));
-    root.render(<ControlledForm />);
+    root.render(<UncontrolledForm />);
   </script>
 
 </body>
