@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Counter with Step Control</title>
+  <script src="https://unpkg.com/react@18/umd/react.development.js" crossorigin></script>
+  <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js" crossorigin></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+</head>
+<body>
+
+  <div id="root"></div>
+
+  <script type="text/babel">
+    function Counter() {
+      const [count, setCount] = React.useState(0);
+      const [step, setStep] = React.useState(1);
+
+      const handleIncrease = () => {
+        setCount(count + step);
+      };
+
+      const handleDecrease = () => {
+        setCount(prev => (prev - step >= 0 ? prev - step : 0));
+      };
+
+      const handleStepChange = (e) => {
+        setStep(Number(e.target.value));
+      };
+
+      return (
+        <div>
+          <h1>Counter: {count}</h1>
+          <input
+            type="number"
+            value={step}
+            onChange={handleStepChange}
+            min="1"
+          />
+          <div>
+            <button onClick={handleIncrease}>Increase</button>
+            <button onClick={handleDecrease}>Decrease</button>
+          </div>
+        </div>
+      );
+    }
+
+    const root = ReactDOM.createRoot(document.getElementById('root'));
+    root.render(<Counter />);
+  </script>
+
+</body>
+</html>
